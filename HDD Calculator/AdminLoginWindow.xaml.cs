@@ -23,7 +23,7 @@ namespace HDD_Calculator
 
             //MoveFocus gives focus to the next textbox or whatever comes up next
             Loaded += (sender, e) =>
-                MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+                MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));//
         }
 
         private void cancel_button_Click(object sender, RoutedEventArgs e)
