@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HDD Calculator", "HDD Calculator\HDD Calculator.csproj", "{C4E68C99-6B2C-4977-A90A-6E67C6FC9570}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "HDD Calculator Setup", "HDD Calculator Setup\HDD Calculator Setup.vdproj", "{DAA11327-7EFE-4C08-8219-55FDD50C7BF9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C4E68C99-6B2C-4977-A90A-6E67C6FC9570}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4E68C99-6B2C-4977-A90A-6E67C6FC9570}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4E68C99-6B2C-4977-A90A-6E67C6FC9570}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4E68C99-6B2C-4977-A90A-6E67C6FC9570}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAA11327-7EFE-4C08-8219-55FDD50C7BF9}.Debug|Any CPU.ActiveCfg = Debug
+		{DAA11327-7EFE-4C08-8219-55FDD50C7BF9}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
