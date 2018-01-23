@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace HDD_Calculator
 {
-    internal class Resolution
+    class CameraModel
     {
-        public string Name { get; set; }
-        public EncodingType encodingType { get; set; }
+        public  string Name { get; set; }
+        public Resolution resolution { get; set; }
     }
 }

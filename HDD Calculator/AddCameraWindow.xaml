@@ -21,7 +21,7 @@
 
             <TextBox x:Name="Cameranamebox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" Margin="10,31,0,0"/>
         -->
-            <Button x:Name="AddCameraButton" Style="{DynamicResource RoundCorner}"  Content="Save" HorizontalAlignment="Left" Margin="142,321,0,0" VerticalAlignment="Top" Width="67" Click="AddCameraButton_Click" />
+          <!--  <Button x:Name="AddCameraButton" Style="{DynamicResource RoundCorner}"  Content="Save" HorizontalAlignment="Left" Margin="142,321,0,0" VerticalAlignment="Top" Width="67" Click="AddCameraButton_Click" /> -->
             <!--  <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="Enter Camera Name:"></TextBlock>
             <TextBlock x:Name="textBlock_Copy" HorizontalAlignment="Left" Margin="10,59,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="109" Text="Enter Resolution:"></TextBlock>
             <TextBlock x:Name="textBlock_Copy2" HorizontalAlignment="Left" Margin="9,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="Enter Encoding Type:"></TextBlock>
@@ -32,14 +32,15 @@
            -->
             <DataGrid x:Name="cameraDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="0,0,0,35" RowDetailsVisibilityMode="VisibleWhenSelected" HorizontalAlignment="Right" Width="371">
                 <DataGrid.Columns>
-                    <DataGridTextColumn x:Name="cameraNameColumn" Binding="{Binding CameraName}" Header="Camera Name" Width="SizeToHeader"/>
-                    <DataGridTextColumn x:Name="encodingTypeColumn" Binding="{Binding EncodingType}" Header="Encoding Type" Width="SizeToHeader"/>
                     <DataGridTextColumn x:Name="idColumn" Binding="{Binding Id}" Header="Id" Width="SizeToHeader" Visibility="Hidden"/>
-                    <DataGridTextColumn x:Name="optimalBitRateColumn" Binding="{Binding OptimalBitRate}" Header="Optimal Bit Rate" Width="SizeToHeader"/>
+                    <DataGridTextColumn x:Name="cameraNameColumn" Binding="{Binding CameraName}" Header="Camera Name" Width="SizeToHeader"/>
                     <DataGridTextColumn x:Name="resolutionColumn" Binding="{Binding Resolution}" Header="Resolution" Width="SizeToHeader"/>
+                    <DataGridTextColumn x:Name="encodingTypeColumn" Binding="{Binding EncodingType}" Header="Encoding Type" Width="SizeToHeader"/>
+                    <DataGridTextColumn x:Name="optimalBitRateColumn" Binding="{Binding OptimalBitRate}" Header="Optimal Bit Rate" Width="SizeToHeader"/>
+                   
                 </DataGrid.Columns>
             </DataGrid>
-            <Button x:Name="AddCameraButton_Copy" Style="{DynamicResource RoundCorner}"  Content="Save" HorizontalAlignment="Left" Margin="142,321,0,0" VerticalAlignment="Top" Width="67" Click="AddCameraButton_Click" />
+            <Button x:Name="SaveButton" Style="{DynamicResource RoundCorner}"  Content="Save" HorizontalAlignment="Left" Margin="142,321,0,0" VerticalAlignment="Top" Width="67" Click="SaveButton_Click" />
 
         </Grid>
     </Border>

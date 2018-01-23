@@ -20,7 +20,8 @@ namespace HDD_Calculator
                 OnPropertyChanged("Name");
             }
         }
-       
+
+       public int bitRate { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

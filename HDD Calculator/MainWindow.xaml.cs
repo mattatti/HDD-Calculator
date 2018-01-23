@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.Entity;
 
+
 namespace HDD_Calculator
 {
     /// <summary>
@@ -33,12 +34,35 @@ namespace HDD_Calculator
         public MainWindow()
         {
             InitializeComponent();
-            var cam = new List<CameraName>
+            //fill CameraName with all the different camera names from listcm
+              var cam = new List<CameraName>();
+            CameraContext cc = new CameraContext();
+                cam = SetCameraNames(cc.Cameras.ToList());
+
+            
+
+
+           
+
+          
+           /* var cam = new List<CameraName>
             {
                 new CameraName() {Name = "Dark_Sight"},
                 new CameraName() {Name = "S_Sight"},
                 new CameraName() {Name = "X_Sight"}
-            };
+            };*/
+            int i = 0;
+           // if (GlobalVariables.getInstance().Cameras[i].CameraName == "")
+            //    ;
+           /* List<CameraModel> listcm = new List<CameraModel>();
+            CameraModel cm = new CameraModel();
+            cm.Name = "";
+            cm.resolution.Name = "";
+            cm.resolution.encodingType.Name = "";
+            cm.resolution.encodingType.bitRate = 1;
+
+            listcm.Add(cm);
+            */
             Camerasbox.ItemsSource = cam;
             Camerasbox.DisplayMemberPath = "Name";
           
@@ -59,7 +83,7 @@ namespace HDD_Calculator
 
         private void Camerasbox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            
             EncodingBox.IsHitTestVisible = false;
             _enc?.Clear();
             this.BitrateTextBlock.Text = String.Empty;
@@ -69,7 +93,9 @@ namespace HDD_Calculator
             if (_cam == null) return;
             switch (_cam.Name)
             {
-                case "Dark_Sight":
+                case "Dark_Sight": // list with no dups listcm[i].Name each case will hold index of listcm
+
+                    //case cm.Name = "";
                     res = new List<Resolution>();
                     res.Add(new Resolution() { Name = "3MP" });
                     res.Add(new Resolution() { Name = "5MP" });
@@ -181,6 +207,27 @@ namespace HDD_Calculator
         {
             _addCameraWindow = new AddCameraWindow();
             _addCameraWindow.Show();
+        }
+
+        private List<CameraName> SetCameraNames(List<Camera> cams)
+        {
+            var cam = new List<CameraName>();
+            
+              
+            var tmpcameranames = new List<string>();
+            foreach (var camera in cams)
+            {
+                tmpcameranames.Add(camera.CameraName);
+            }
+            tmpcameranames=tmpcameranames.Distinct().ToList();
+            foreach (var camstring in tmpcameranames)
+            {
+                CameraName tmpcamname = new CameraName();
+                tmpcamname.Name = camstring;
+                cam.Add(tmpcamname); 
+            }
+
+            return cam;
         }
     }
 }
