@@ -38,7 +38,7 @@ namespace HDD_Calculator
             //fill CameraName with all the different camera names from listcm
             _cameras = new List<CameraName>();
             _cameracontext = new CameraContext();
-            _cameras = SetCameraNames(_cameracontext.Cameras.ToList());
+            _cameras = GetCameraNames(_cameracontext.Cameras.ToList());
        
             Camerasbox.ItemsSource = _cameras;
             Camerasbox.DisplayMemberPath = "Name";
@@ -70,7 +70,11 @@ namespace HDD_Calculator
                 {
                     res = new List<Resolution>();
                     res = findResolutions(_cameracontext.Cameras.ToList() , _cam.Name);
-                    Resolutionbox.ItemsSource = res;
+                     List<Resolution> resnodup = new List<Resolution>();
+                   
+                    resnodup = GetResNames(res);
+                    Resolutionbox.ItemsSource = resnodup;
+                       
                     Resolutionbox.DisplayMemberPath = "Name";
                 }
             }
@@ -85,7 +89,7 @@ namespace HDD_Calculator
                 return;
             _enc = new List<EncodingType>();
             _enc = findEncodingTypes(_cameracontext.Cameras.ToList(), _cam.Name, _resb.Name);
-            EncodingBox.ItemsSource = _enc;
+            EncodingBox.ItemsSource = _enc.Distinct().ToList();
             EncodingBox.DisplayMemberPath = "Name";
             EncodingBox.IsHitTestVisible = true;
         }
@@ -116,7 +120,7 @@ namespace HDD_Calculator
             _addCameraWindow.Show();
         }
 
-        private List<CameraName> SetCameraNames(List<Camera> cams)
+        private List<CameraName> GetCameraNames(List<Camera> cams)
         {
             var cam = new List<CameraName>();
             
@@ -178,6 +182,25 @@ namespace HDD_Calculator
             }
 
             return null;
+        }
+
+        private List<Resolution> GetResNames(List<Resolution> res)
+        {
+            var tempres = new List<Resolution>();
+            
+            var tmpresnames = new List<string>();
+            foreach (var resolution in res)
+            {
+                tmpresnames.Add(resolution.Name);
+            }
+            tmpresnames = tmpresnames.Distinct().ToList();
+            foreach (var camstring in tmpresnames)
+            {
+                Resolution tmpresname = new Resolution();
+                tmpresname.Name = camstring;
+                tempres.Add(tmpresname);
+            }
+            return tempres;
         }
     }
 }
