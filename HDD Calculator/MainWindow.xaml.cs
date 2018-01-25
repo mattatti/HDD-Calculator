@@ -26,51 +26,26 @@ namespace HDD_Calculator
         private CameraName _cam;
         private Resolution _resb;
         private EncodingType _encb;
-        private ObservableCollection<EncodingType> _enc;
+        private List<EncodingType> _enc;
         private AdminLoginWindow _adminloginwin;
         private AddCameraWindow _addCameraWindow;
-
+        private List<CameraName> _cameras;
+        private CameraContext _cameracontext;
 
         public MainWindow()
         {
             InitializeComponent();
             //fill CameraName with all the different camera names from listcm
-              var cam = new List<CameraName>();
-            CameraContext cc = new CameraContext();
-                cam = SetCameraNames(cc.Cameras.ToList());
-
-            
-
-
-           
-
-          
-           /* var cam = new List<CameraName>
-            {
-                new CameraName() {Name = "Dark_Sight"},
-                new CameraName() {Name = "S_Sight"},
-                new CameraName() {Name = "X_Sight"}
-            };*/
-            int i = 0;
-           // if (GlobalVariables.getInstance().Cameras[i].CameraName == "")
-            //    ;
-           /* List<CameraModel> listcm = new List<CameraModel>();
-            CameraModel cm = new CameraModel();
-            cm.Name = "";
-            cm.resolution.Name = "";
-            cm.resolution.encodingType.Name = "";
-            cm.resolution.encodingType.bitRate = 1;
-
-            listcm.Add(cm);
-            */
-            Camerasbox.ItemsSource = cam;
+            _cameras = new List<CameraName>();
+            _cameracontext = new CameraContext();
+            _cameras = SetCameraNames(_cameracontext.Cameras.ToList());
+       
+            Camerasbox.ItemsSource = _cameras;
             Camerasbox.DisplayMemberPath = "Name";
           
             Resolutionbox.IsHitTestVisible = false;
             EncodingBox.IsHitTestVisible = false;
             this.Closed += new EventHandler(MainWindow_Closed);
-           
-
         }
 
         private void MainWindow_Closed(object sender, EventArgs args)
@@ -78,12 +53,10 @@ namespace HDD_Calculator
             _adminloginwin.Close();
             _addCameraWindow.Close();
             this.Close();
-           
         }
 
         private void Camerasbox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
             EncodingBox.IsHitTestVisible = false;
             _enc?.Clear();
             this.BitrateTextBlock.Text = String.Empty;
@@ -91,86 +64,29 @@ namespace HDD_Calculator
             List<Resolution> res;
             _cam = Camerasbox.SelectedItem as CameraName;
             if (_cam == null) return;
-            switch (_cam.Name)
+            foreach (var camera in _cameras)
             {
-                case "Dark_Sight": // list with no dups listcm[i].Name each case will hold index of listcm
-
-                    //case cm.Name = "";
+                if (camera.Name == _cam.Name)
+                {
                     res = new List<Resolution>();
-                    res.Add(new Resolution() { Name = "3MP" });
-                    res.Add(new Resolution() { Name = "5MP" });
+                    res = findResolutions(_cameracontext.Cameras.ToList() , _cam.Name);
                     Resolutionbox.ItemsSource = res;
                     Resolutionbox.DisplayMemberPath = "Name";
-                    break;
-
-                case "S_Sight":
-                    res = new List<Resolution>();
-                    res.Add(new Resolution() { Name = "1MP" });
-                    res.Add(new Resolution() { Name = "2MP" });
-                    Resolutionbox.ItemsSource = res;
-                    Resolutionbox.DisplayMemberPath = "Name";
-                    break;
-                case "X_Sight":
-                    res = new List<Resolution>();
-                    res.Add(new Resolution() { Name = "3MP" });
-                    res.Add(new Resolution() { Name = "5MP" });
-                    Resolutionbox.ItemsSource = res;
-                    Resolutionbox.DisplayMemberPath = "Name";
-                    break;
-
-                default:
-                    return;
+                }
             }
-
             Resolutionbox.IsHitTestVisible = true;
-
         }
-
 
         private void Resolutionbox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
             _resb = Resolutionbox.SelectedItem as Resolution;
 
             if (_resb == null)
                 return;
-            if (_cam.Name == "Dark_Sight" && (_resb.Name == "3MP" || _resb.Name == "5MP"))
-            {
-
-
-                _enc = new ObservableCollection<EncodingType>
-                {
-                    new EncodingType() {Name = "H264"},
-                    new EncodingType() {Name = "H265"}
-                };
-                EncodingBox.ItemsSource = _enc;
-                EncodingBox.DisplayMemberPath = "Name";
-            }
-            if (_cam.Name == "X_Sight" && (_resb.Name == "3MP" || _resb.Name == "5MP"))
-            {
-
-
-                _enc = new ObservableCollection<EncodingType>
-                {
-                    new EncodingType() {Name = "H264"},
-                    new EncodingType() {Name = "H265"}
-                };
-                EncodingBox.ItemsSource = _enc;
-                EncodingBox.DisplayMemberPath = "Name";
-            }
-
-            if (_cam.Name == "S_Sight" && (_resb.Name == "1MP" || _resb.Name == "2MP"))
-            {
-
-
-                _enc = new ObservableCollection<EncodingType>
-                {
-
-                    new EncodingType() {Name = "H265"}
-                };
-                EncodingBox.ItemsSource = _enc;
-                EncodingBox.DisplayMemberPath = "Name";
-            }
+            _enc = new List<EncodingType>();
+            _enc = findEncodingTypes(_cameracontext.Cameras.ToList(), _cam.Name, _resb.Name);
+            EncodingBox.ItemsSource = _enc;
+            EncodingBox.DisplayMemberPath = "Name";
             EncodingBox.IsHitTestVisible = true;
         }
 
@@ -179,23 +95,14 @@ namespace HDD_Calculator
             OptimalBitRateMessage.Visibility = Visibility.Visible;
             _encb = EncodingBox.SelectedItem as EncodingType;
             if (_encb == null) return;
-            if (_cam.Name == "Dark_Sight" && _encb.Name == "H264" && _resb.Name == "3MP")
-            {
-
-                BitrateTextBlock.Text = "4096";
-
-            }
-
+            BitrateTextBlock.Text = findbitrate(_cameracontext.Cameras.ToList(), _cam.Name, _resb.Name, _encb.Name);
         }
 
         private void AdminLogin_button_Click(object sender, RoutedEventArgs e)
-        {
-           
+        {    
              _adminloginwin = new AdminLoginWindow();
             _adminloginwin.SubmitClicked += adminloginwin_SubmitClicked;
             _adminloginwin.ShowDialog();
-
-
         }
         private void adminloginwin_SubmitClicked(object sender, EventArgs e)
         {
@@ -228,6 +135,49 @@ namespace HDD_Calculator
             }
 
             return cam;
+        }
+
+        private List<Resolution> findResolutions(List<Camera> cams, string cameraName)
+        {
+            List<Resolution> tempres = new List<Resolution>();
+            foreach (var camera in cams)
+            {
+                if (camera.CameraName == cameraName)
+                {
+                    Resolution res = new Resolution();
+                    res.Name = camera.Resolution;
+                    tempres.Add(res);
+                }
+            }
+            return tempres;
+        }
+
+        private List<EncodingType> findEncodingTypes(List<Camera> cams, string cameraName,string resolutionName)
+        {
+            List<EncodingType> tempenctype = new List<EncodingType>();
+            foreach (var camera in cams)
+            {
+                if (camera.CameraName == cameraName && camera.Resolution == resolutionName)
+                {
+                    EncodingType enctype = new EncodingType();
+                    enctype.Name = camera.EncodingType;
+                    tempenctype.Add(enctype);
+                }
+            }
+            return tempenctype;
+        }
+
+        private string findbitrate(List<Camera> cams, string cameraName, string resolutionName,string encodingtypeName)
+        {
+            foreach (var camera in cams)
+            {
+                if (camera.CameraName == cameraName && camera.Resolution == resolutionName && camera.EncodingType==encodingtypeName)
+                {             
+                    return camera.OptimalBitRate;
+                }
+            }
+
+            return null;
         }
     }
 }
