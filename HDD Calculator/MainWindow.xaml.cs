@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.Entity;
+using System.Data.SqlClient;
 
 
 namespace HDD_Calculator
@@ -31,13 +33,18 @@ namespace HDD_Calculator
         private AddCameraWindow _addCameraWindow;
         private List<CameraName> _cameras;
         private CameraContext _cameracontext;
+      //  private string dbPath = Application.StartupPath + "\\TEST.MDF";
 
         public MainWindow()
         {
+       
             InitializeComponent();
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Connection"].ConnectionString);
+        //    connection.Open();
             //fill CameraName with all the different camera names from listcm
             _cameras = new List<CameraName>();
             _cameracontext = new CameraContext();
+       
             _cameras = GetCameraNames(_cameracontext.Cameras.ToList());
        
             Camerasbox.ItemsSource = _cameras;
@@ -57,6 +64,7 @@ namespace HDD_Calculator
 
         private void Camerasbox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+         
             EncodingBox.IsHitTestVisible = false;
             _enc?.Clear();
             this.BitrateTextBlock.Text = String.Empty;
@@ -117,7 +125,18 @@ namespace HDD_Calculator
         private void AddCameraType_Click(object sender, RoutedEventArgs e)
         {
             _addCameraWindow = new AddCameraWindow();
+            _addCameraWindow.DataChanged += _addCameraWindow_DataChanged;
             _addCameraWindow.Show();
+        }
+        private void _addCameraWindow_DataChanged(object sender, EventArgs e)
+        {
+            _cameras = GetCameraNames(_cameracontext.Cameras.ToList());
+            Camerasbox.ItemsSource = _cameras;
+            Camerasbox.DisplayMemberPath = "Name";
+
+            Resolutionbox.IsHitTestVisible = false;
+            EncodingBox.IsHitTestVisible = false;
+            this.Closed += new EventHandler(MainWindow_Closed);
         }
 
         private List<CameraName> GetCameraNames(List<Camera> cams)

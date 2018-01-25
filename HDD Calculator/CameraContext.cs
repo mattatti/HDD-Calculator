@@ -9,6 +9,8 @@ namespace HDD_Calculator
 {
     public class CameraContext : DbContext
     {
+        
+
         public DbSet<Camera> Cameras { get; set; }
     }
 }

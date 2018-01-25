@@ -46,6 +46,9 @@ namespace HDD_Calculator
             else
             {
                 BadCredentials.Text = "Bad Credentials, try again.";
+                Usernamebox.Text = "";
+                Passwordbox.Password = "";
+
             }
         }
         private async void TheEnclosingMethod()

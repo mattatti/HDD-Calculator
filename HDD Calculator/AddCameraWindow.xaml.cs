@@ -23,10 +23,8 @@ namespace HDD_Calculator
     /// </summary>
     public partial class AddCameraWindow : Window
     {
-       
-        private DbContext db;
-       
-        
+        public delegate void DataChangedEventHandler(object sender, EventArgs e);
+        public event DataChangedEventHandler DataChanged;
         public AddCameraWindow()
         {
             InitializeComponent();
@@ -36,16 +34,14 @@ namespace HDD_Calculator
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-
             GlobalVariables.getInstance().Context.SaveChanges();
             this.cameraDataGrid.Items.Refresh();
-            GlobalVariables.getInstance().Cameras = new List<Camera>();
-            GlobalVariables.getInstance().Cameras = GlobalVariables.getInstance().Context.Cameras.ToList();
-            string a = GlobalVariables.getInstance().Cameras[0].CameraName;
-
-            GlobalVariables.getInstance().Context.Dispose();
+            DataChangedEventHandler handler = DataChanged;
+            if (handler != null)
+            {
+                handler(this, new EventArgs());
+            }
             Close();
-           
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -63,7 +59,7 @@ namespace HDD_Calculator
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             base.OnClosing(e);
-            GlobalVariables.getInstance().Context.Dispose();
+           // GlobalVariables.getInstance().Context.Dispose();
         }
 
     }
