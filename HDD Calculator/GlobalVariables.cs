@@ -15,33 +15,17 @@ namespace HDD_Calculator
     public class GlobalVariables : INotifyPropertyChanged
     {
         private GlobalVariables() { }
-        private static readonly GlobalVariables _instance = new GlobalVariables();
+        private static GlobalVariables instance = null;
         public static GlobalVariables getInstance()
-        { 
-            return _instance;
-        }
-
-        private List<Camera> _cameras;
-        public List<Camera> Cameras
         {
-            get { return _cameras;}
-            set
+            if (instance == null)
             {
-                _cameras = value;
-                OnPropertyChanged("Cameras");
+                instance = new GlobalVariables();
             }
+            return instance;
         }
-
-        private CameraContext _context;
-        public CameraContext Context
-        {
-            get { return _context; }
-            set
-            {
-                _context = value;
-                OnPropertyChanged("Context");
-            }
-        }
+        public List<Camera> Cameras { get; set; }
+       // public CameraContext Context { get; set; }
 
 
         protected virtual void OnPropertyChanged(string propertyName)
