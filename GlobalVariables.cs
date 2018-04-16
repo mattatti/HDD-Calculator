@@ -10,7 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace HDD_Calculator
+namespace Testwindows
 {
     public class GlobalVariables : INotifyPropertyChanged
     {
@@ -24,8 +24,13 @@ namespace HDD_Calculator
             }
             return instance;
         }
-        public List<Camera> Cameras { get; set; }
-       // public CameraContext Context { get; set; }
+
+        public int _databaseSize { get; set; }
+        public string[,] _database { get; set; }
+        public bool initflag = true;
+
+        
+        // public CameraContext Context { get; set; }
 
 
         protected virtual void OnPropertyChanged(string propertyName)

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace HDD_Calculator
+namespace Testwindows
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HDD_Calculator
+namespace Testwindows
 {
     using System;
     using System.Collections.Generic;

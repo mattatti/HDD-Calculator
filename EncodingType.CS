@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HDD_Calculator
+namespace Testwindows
 {
     internal class EncodingType : INotifyPropertyChanged
     {
