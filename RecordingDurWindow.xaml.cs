@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 
-namespace Testwindows
+namespace HDD_Calculator
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -227,7 +227,7 @@ namespace Testwindows
 
 
 
-        private List<CameraName> SetCameraNames(List<Camera> cams)
+     /*   private List<CameraName> SetCameraNames(List<Camera> cams)
         {
             var cam = new List<CameraName>();
 
@@ -246,6 +246,6 @@ namespace Testwindows
             }
 
             return cam;
-        }
+        }*/
     }
 }

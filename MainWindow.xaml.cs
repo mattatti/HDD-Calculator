@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Testwindows
+namespace HDD_Calculator
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

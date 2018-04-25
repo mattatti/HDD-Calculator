@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 
-namespace Testwindows
+namespace HDD_Calculator
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -54,7 +54,7 @@ namespace Testwindows
         {
             IconHelper.RemoveIcon(this);
         }
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void Back_button_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mw = new MainWindow();
             mw.Show();
@@ -191,61 +191,38 @@ namespace Testwindows
             //need to save in another database the selected encoding type
         }
 
-        private void BitRate_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void BitRateBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            /*   _bitRate = Resolutionbox.SelectedItem as BitRate;
+               _bitRate = BitRateBox.SelectedItem as BitRate;
                List<BitRate> brate = new List<BitRate>(); ;
                if (_bitRate == null)
                    return;
 
-               List<string> temp = new List<string>();
-               for (var index = 0; index < _databaseSize; index++)
-               {
-                   if (_bitRate.Name == _database[index, _bitrateColumn])
-                   {
-                       temp.Add(_database[index, _encodingtypeColumn]);
-                   }
-               }
-               temp = temp.Distinct().ToList();
-               for (var i = 0; i < temp.Count; i++)
-               {
-                   //check all instances of cam.name and fill into a list of resolutions
-                   EncodingType r = new EncodingType();
-                   r.Name = temp[i];
-                   enctype.Add(r);
-               }
 
-
-               EncodingBox.ItemsSource = enctype;
-               EncodingBox.DisplayMemberPath = "Name";
+            int x = _bitRate.Value;
 
 
 
-               EncodingBox.IsHitTestVisible = true;*/
         }
 
-
-        
-
-        private List<CameraName> SetCameraNames(List<Camera> cams)
+        private void ChannelNumberBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var cam = new List<CameraName>();
 
+        }
 
-            var tmpcameranames = new List<string>();
-            foreach (var camera in cams)
-            {
-                tmpcameranames.Add(camera.CameraName);
-            }
-            tmpcameranames = tmpcameranames.Distinct().ToList();
-            foreach (var camstring in tmpcameranames)
-            {
-                CameraName tmpcamname = new CameraName();
-                tmpcamname.Name = camstring;
-                cam.Add(tmpcamname);
-            }
+        private void OssiaOSBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
-            return cam;
+        }
+
+        private void SubStremBitRateBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Calculate_Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

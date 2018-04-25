@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace Testwindows
+namespace HDD_Calculator
 {
     public static class IconHelper
     {
