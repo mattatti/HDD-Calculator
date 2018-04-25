@@ -62,12 +62,14 @@
     </ApplicationDefinition>
     <Compile Include="BitRate.cs" />
     <Compile Include="CameraName.cs" />
+    <Compile Include="ChannelNumber.cs" />
     <Compile Include="EncodingType.CS" />
     <Compile Include="GlobalVariables.cs" />
     <Compile Include="HDDUsageWindow.xaml.cs">
       <DependentUpon>HDDUsageWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="IconHelper.cs" />
+    <Compile Include="OssiaOS.cs" />
     <Compile Include="RecordingDurWindow.xaml.cs">
       <DependentUpon>RecordingDurWindow.xaml</DependentUpon>
     </Compile>

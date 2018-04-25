@@ -11,8 +11,26 @@
 
         >
     <Grid Background="White" Margin="0,0,2,0">
-        <Button x:Name="HDDUsage" Background="DeepSkyBlue" Content="HDD Usage" HorizontalAlignment="Left" FontSize="20" Margin="112,53,0,0" VerticalAlignment="Top" Width="208" Height="58" Click="HDDUsage_button_Click"/>
-        <Button x:Name="Recording_Duration" Background="LightBlue"  Content="Recording Duration " FontSize="20" HorizontalAlignment="Left" Margin="112,128,0,0" VerticalAlignment="Top" Width="208" Height="58" Click="Recording_Duration_button_Click"/>
+        <Button x:Name="HDDUsage" Background="DeepSkyBlue" Content="HDD Usage" HorizontalAlignment="Left" FontSize="20" Margin="112,53,0,0" VerticalAlignment="Top" Width="208" Height="58" Click="HDDUsage_button_Click">
+            <Button.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold">HDD Usage</TextBlock>
+                        <TextBlock>Calculating the necessary size of HDD according to required recording time.</TextBlock>
+                    </StackPanel>
+                </ToolTip>
+            </Button.ToolTip>
+        </Button>
+        <Button x:Name="Recording_Duration" Background="LightBlue"  Content="Recording Duration " FontSize="20" HorizontalAlignment="Left" Margin="112,128,0,0" VerticalAlignment="Top" Width="208" Height="58" Click="Recording_Duration_button_Click">
+            <Button.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold">Recording_Duration</TextBlock>
+                        <TextBlock>Calculating the recording duration according to HDD size.</TextBlock>
+                    </StackPanel>
+                </ToolTip>
+            </Button.ToolTip>
+        </Button>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" FontSize="20" Margin="10,10,0,0" TextWrapping="Wrap" Text="HDD Usage and recording duration calculator" VerticalAlignment="Top" Width="405"/>
         <Image x:Name="Image1_png" Margin="112,216,114,10" Source="Image1.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 

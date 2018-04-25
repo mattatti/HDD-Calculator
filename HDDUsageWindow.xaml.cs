@@ -24,32 +24,34 @@ namespace HDD_Calculator
         private CameraName _cam;
         private Resolution _resb;
         private EncodingType _encb;
-        private BitRate _bitRate;        
-        
+        private BitRate _bitRate;
+        private ChannelNumber _channelNumber;
+        private OssiaOS _ossiaOS;
+
         private readonly int _cameraColumn = 0;
         private readonly int _resolutionColumn = 1;
         private readonly int _encodingtypeColumn = 2;
         private readonly int _bitrateColumn = 3;
+        private readonly int _maxChannelNumber = 128;
 
         public HDDUsageWindow()
         {
             InitializeComponent();
-            //_databaseSize = Load_Excel_File();
-            //fill CameraName with all the different camera names from listcm
           
             Camerasbox.ItemsSource = StringToCameraNameList(GlobalVariables.getInstance()._databaseSize, _cameraColumn);
             Camerasbox.DisplayMemberPath = "Name";
 
             Resolutionbox.IsHitTestVisible = false;
             EncodingBox.IsHitTestVisible = false;
-
+            ChannelNumberBox.ItemsSource= InitChannelNumbers();    
+            ChannelNumberBox.DisplayMemberPath = "Value";
+            OssiaOSBox.ItemsSource = InitOssiaOS();
+            OssiaOSBox.DisplayMemberPath = "Name";
             BitRateBox.ItemsSource = StringToBitRateList(GlobalVariables.getInstance()._databaseSize, _bitrateColumn);
             BitRateBox.DisplayMemberPath = "Value";
-          //  this.Closed += new EventHandler(MainWindow_Closed);
-       
-            
-        }
         
+        }
+       
         protected override void OnSourceInitialized(EventArgs e)
         {
             IconHelper.RemoveIcon(this);
@@ -61,7 +63,32 @@ namespace HDD_Calculator
             this.Close();
 
         }
-    private List<BitRate> StringToBitRateList(int _databaseSize, int ColumnNumber)
+
+        private List<OssiaOS> InitOssiaOS()
+        {
+            List<OssiaOS> _oss_OS = new List<OssiaOS>();
+            OssiaOS os1= new OssiaOS();
+            os1.Name = "Yes";
+            _oss_OS.Add(os1);
+            OssiaOS os2 = new OssiaOS();
+            os2.Name = "No";
+            _oss_OS.Add(os2);
+            return _oss_OS;
+        }
+
+        private List<ChannelNumber> InitChannelNumbers()
+        {
+            List<ChannelNumber> channel_num = new List<ChannelNumber>();
+            for (var i = 1; i <= _maxChannelNumber; i++)
+            {
+                ChannelNumber cn = new ChannelNumber();
+                cn.Value = i;
+                channel_num.Add(cn);
+            }
+            return channel_num;
+        }
+
+        private List<BitRate> StringToBitRateList(int _databaseSize, int ColumnNumber)
         {
             List<BitRate> brate = new List<BitRate>();
             List<string> temp = new List<string>();
@@ -194,20 +221,19 @@ namespace HDD_Calculator
         private void BitRateBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
                _bitRate = BitRateBox.SelectedItem as BitRate;
-               List<BitRate> brate = new List<BitRate>(); ;
+               List<BitRate> brate = new List<BitRate>(); 
                if (_bitRate == null)
                    return;
+               // add bitrate to the table (datagrid) and calculation class
 
-
-            int x = _bitRate.Value;
-
-
-
+            
         }
 
         private void ChannelNumberBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            _channelNumber = ChannelNumberBox.SelectedItem as ChannelNumber;
 
+            // add bitrate to the table (datagrid) and calculation class
         }
 
         private void OssiaOSBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -221,6 +247,11 @@ namespace HDD_Calculator
         }
 
         private void Calculate_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RecordingTimePerDayBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
