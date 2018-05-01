@@ -63,6 +63,7 @@
     <Compile Include="BitRate.cs" />
     <Compile Include="CameraName.cs" />
     <Compile Include="ChannelNumber.cs" />
+    <Compile Include="DatagridData.cs" />
     <Compile Include="EncodingType.CS" />
     <Compile Include="GlobalVariables.cs" />
     <Compile Include="HDDUsageWindow.xaml.cs">
@@ -73,7 +74,9 @@
     <Compile Include="RecordingDurWindow.xaml.cs">
       <DependentUpon>RecordingDurWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RecordingTimePerDay.cs" />
     <Compile Include="Resolution.cs" />
+    <Compile Include="SubSteamBitRate.cs" />
     <Page Include="HDDUsageWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -27,13 +27,19 @@ namespace HDD_Calculator
         private BitRate _bitRate;
         private ChannelNumber _channelNumber;
         private OssiaOS _ossiaOS;
-
+        private SubSteamBitRate _subSteamBitRate;
+        private RecordingTimePerDay _recordingTimePerDay;
+        private ObservableCollection<DatagridData> datagridData = new ObservableCollection<DatagridData>();
         private readonly int _cameraColumn = 0;
         private readonly int _resolutionColumn = 1;
         private readonly int _encodingtypeColumn = 2;
         private readonly int _bitrateColumn = 3;
         private readonly int _maxChannelNumber = 128;
-
+        private readonly int _maxHoursInADay = 24;
+        private int _numValue = 0;
+        private int _datagridDataIndex = 1;
+        private double _capacityInTB;
+        private double _totalcapacity = 0;
         public HDDUsageWindow()
         {
             InitializeComponent();
@@ -47,15 +53,27 @@ namespace HDD_Calculator
             ChannelNumberBox.DisplayMemberPath = "Value";
             OssiaOSBox.ItemsSource = InitOssiaOS();
             OssiaOSBox.DisplayMemberPath = "Name";
-            BitRateBox.ItemsSource = StringToBitRateList(GlobalVariables.getInstance()._databaseSize, _bitrateColumn);
+            List<BitRate> tempbrate = new List<BitRate>();
+            tempbrate = StringToBitRateList(GlobalVariables.getInstance()._databaseSize, _bitrateColumn);
+            SubStreamBitRateBox.ItemsSource = SubStreamBitRateList(tempbrate);
+            SubStreamBitRateBox.DisplayMemberPath = "Value";
+            BitRateBox.ItemsSource = tempbrate;
             BitRateBox.DisplayMemberPath = "Value";
-        
+            RecordingTimePerDayBox.ItemsSource = InitRecordingTimePerDay();
+            RecordingTimePerDayBox.DisplayMemberPath = "Value";
+
+            RequiredRecordingTimeBlock.Text = _numValue.ToString();
+            SubStreamBitRateBox.IsHitTestVisible = false;
+          //  this.DataContext = datagridData;
         }
        
         protected override void OnSourceInitialized(EventArgs e)
         {
             IconHelper.RemoveIcon(this);
         }
+
+       
+
         private void Back_button_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mw = new MainWindow();
@@ -63,7 +81,30 @@ namespace HDD_Calculator
             this.Close();
 
         }
+        
+        private List<RecordingTimePerDay> InitRecordingTimePerDay()
+        {
+            List<RecordingTimePerDay> recordingtimeperday = new List<RecordingTimePerDay>();
+            for (var i = 1; i <= _maxHoursInADay; i++)
+            {
+                RecordingTimePerDay rtpd = new RecordingTimePerDay();
+                rtpd.Value = i;
+                recordingtimeperday.Add(rtpd);
+            }
+            return recordingtimeperday;
+        }
+        private List<SubSteamBitRate> SubStreamBitRateList(List<BitRate> tempbrate)
+        {
+            List<SubSteamBitRate> substeambitrate = new List<SubSteamBitRate>();
+            for (int i = 0; i <= tempbrate.Count / 2; i++)
+            {
+                SubSteamBitRate ssbr = new SubSteamBitRate();
+                ssbr.Value = tempbrate.ElementAt(i).Value;
+                substeambitrate.Add(ssbr);
+            }
 
+            return substeambitrate;
+        }
         private List<OssiaOS> InitOssiaOS()
         {
             List<OssiaOS> _oss_OS = new List<OssiaOS>();
@@ -238,22 +279,149 @@ namespace HDD_Calculator
 
         private void OssiaOSBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            _ossiaOS = OssiaOSBox.SelectedItem as OssiaOS;
+            if (string.Equals(_ossiaOS.Name, "No"))
+            {
+                SubStreamBitRateBox.IsHitTestVisible = false;
+            }
+            else
+                SubStreamBitRateBox.IsHitTestVisible = true;
 
         }
 
         private void SubStremBitRateBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            _subSteamBitRate= SubStreamBitRateBox.SelectedItem as SubSteamBitRate;
         }
 
         private void Calculate_Button_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                //Check that Bit-Rate & Channel & Ossia OS & Sub-Stream Bit-Rate & Recording Time Per Day & Required recording time fields aren't empty
+                if (String.Equals(_ossiaOS.Name, "Yes"))
+                {
+                    // ((G49 + K49) * I49 * 3600 / 8 / 1024) * (Q49*T49/1024) if answer in gigabyte
+                    double x = (double)((double)(int.Parse(BitRateBox.Text) + (double)int.Parse(SubStreamBitRateBox.Text)) * (double)int.Parse(ChannelNumberBox.Text)
+                                                                                                                           * 3600 / 8 / 1024) * (double)int.Parse(RecordingTimePerDayBox.Text) * (double)int.Parse(RequiredRecordingTimeBlock.Text) / 1024 / 1024;
 
+                    _capacityInTB = Math.Round(x, 2);// answer in terabyte
+                    help_calculation();
+
+                }
+                else if (String.Equals(_ossiaOS.Name, "No"))
+                {
+                    // (G49 * I49 * 3600 / 8 / 1024))* (Q49*T49/1024) if answer in gigabyte
+                    // /1024 if answer in terabyte
+                    double x = (double)((double)int.Parse(BitRateBox.Text) * (double)int.Parse(ChannelNumberBox.Text)
+                                                                           * 3600 / 8 / 1024) * (double)int.Parse(RecordingTimePerDayBox.Text) * (double)int.Parse(RequiredRecordingTimeBlock.Text) / 1024 / 1024;
+
+                    _capacityInTB = Math.Round(x, 2);// answer in terabyte
+                    help_calculation();
+                }
+            }
+            catch (NullReferenceException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
+        }
+       
+        private void help_calculation()
+        {
+            datagridData.Add(new DatagridData()
+            {
+                Id = _datagridDataIndex,
+                BitRate = int.Parse(BitRateBox.Text),
+                Channels = int.Parse(ChannelNumberBox.Text),
+                substream = int.Parse(SubStreamBitRateBox.Text), //might be null
+                hours = int.Parse(RecordingTimePerDayBox.Text),
+                Days = int.Parse(RequiredRecordingTimeBlock.Text),
+                Capacity = _capacityInTB
+            });
+            _datagridDataIndex++;
+            dataGridCapacityTB.ItemsSource=datagridData;   
+             _totalcapacity += _capacityInTB;
+            TotalCapacity_textbox.Text = _totalcapacity.ToString();
+
+            if (dataGridCapacityTB.Items.Count > 0)
+            {
+                var border = VisualTreeHelper.GetChild(dataGridCapacityTB, 0) as Decorator;
+                if (border != null)
+                {
+                    var scroll = border.Child as ScrollViewer;
+                    if (scroll != null) scroll.ScrollToEnd();
+                }
+            }
         }
 
         private void RecordingTimePerDayBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void RequiredRecordingTimeBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+           string x = RecordingTimePerDayTextBlock.Text.ToString();
+        }
+
+
+       
+
+        public int NumValue
+        {
+            get { return _numValue; }
+            set
+            {
+                _numValue = value;
+                RequiredRecordingTimeBlock.Text = value.ToString();
+            }
+        }
+
+       
+
+        private void cmdUp_Click(object sender, RoutedEventArgs e)
+        {
+            NumValue++;
+        }
+
+        private void cmdDown_Click(object sender, RoutedEventArgs e)
+        {
+            if (NumValue == 0)
+                return;
+            NumValue--;
+        }
+
+        private void txtNum_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (RequiredRecordingTimeBlock == null)
+            {
+                return;
+            }
+
+            if (!int.TryParse(RequiredRecordingTimeBlock.Text, out _numValue))
+                RequiredRecordingTimeBlock.Text = _numValue.ToString();
+        }
+
+
+      
+
+        private void DataGrid_UnloadingRow(object sender, DataGridRowEventArgs e)
+        {
+
+            try
+            {
+                DatagridData item = (DatagridData)e.Row.Item; // get the deleted item to handle it
+                // Rest of your code ...
+                // For example : deleting the object from DB using entityframework
+                _totalcapacity -= item.Capacity;
+                TotalCapacity_textbox.Text = _totalcapacity.ToString();
+            }
+            catch (InvalidCastException ex)
+            {
+                ;
+            }
+           
         }
     }
 }

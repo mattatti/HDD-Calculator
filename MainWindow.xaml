@@ -8,7 +8,7 @@
         Height="339" Width="444"
         MinHeight="339" MaxHeight="339" MinWidth="444" MaxWidth="444"
         WindowStartupLocation="CenterScreen"
-
+        Title=" HDD Calculator                                          Version 1.0.0"
         >
     <Grid Background="White" Margin="0,0,2,0">
         <Button x:Name="HDDUsage" Background="DeepSkyBlue" Content="HDD Usage" HorizontalAlignment="Left" FontSize="20" Margin="112,53,0,0" VerticalAlignment="Top" Width="208" Height="58" Click="HDDUsage_button_Click">
@@ -25,7 +25,7 @@
             <Button.ToolTip>
                 <ToolTip>
                     <StackPanel>
-                        <TextBlock FontWeight="Bold">Recording_Duration</TextBlock>
+                        <TextBlock FontWeight="Bold">Recording Duration</TextBlock>
                         <TextBlock>Calculating the recording duration according to HDD size.</TextBlock>
                     </StackPanel>
                 </ToolTip>
