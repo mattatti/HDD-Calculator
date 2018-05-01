@@ -6,7 +6,9 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:HDD_Calculator"
         mc:Ignorable="d"
-        Title="HDD Usage" Height="444" Width="631"
+        Title="HDD Usage" Height="444" Width="469"
+        MinHeight="444" MinWidth="469"
+        MaxHeight="444" MaxWidth="469"
         WindowStartupLocation="CenterScreen" 
          FontWeight="Medium"
         >
@@ -16,9 +18,7 @@
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="203*"/>
         </Grid.ColumnDefinitions>
-        <Border BorderBrush="Red" BorderThickness="2" CornerRadius="6" Grid.ColumnSpan="2">
-
-        </Border>
+        <Border BorderBrush="Red" BorderThickness="2" CornerRadius="6" Grid.ColumnSpan="2" Margin="0,0,-2,-1"/>
         <ComboBox x:Name="Camerasbox" HorizontalAlignment="Left" Margin="10,47,0,0" VerticalAlignment="Top" Width="114" Height="24" SelectionChanged="Camerasbox_SelectionChanged" Grid.ColumnSpan="2">
             <ComboBox.ToolTip>
                 <ToolTip>
@@ -29,9 +29,9 @@
                 </ToolTip>
             </ComboBox.ToolTip>
         </ComboBox>
-        <Button x:Name="Back_button" Style="{DynamicResource RoundCorner}" Content="Back" HorizontalAlignment="Left" Margin="0,371,0,0" VerticalAlignment="Top" Width="75" Click="Back_button_Click" Grid.Column="1" Height="20"/>
-        <Button x:Name="Calculate_Button" Style="{DynamicResource RoundCorner}" Content="Calculate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110"  Height="65" Margin="396,87,0,0" Click="Calculate_Button_Click" Grid.Column="1"/>
-        <DataGrid x:Name="dataGridCapacityTB" CanUserAddRows="False" HorizontalScrollBarVisibility="Hidden" Margin="10,252,0,0" AutoGenerateColumns="False"   ItemsSource="{Binding Path=datagridData}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="407"  Height="110" Grid.ColumnSpan="2"  UnloadingRow="DataGrid_UnloadingRow">
+        <Button x:Name="Back_button" Style="{DynamicResource RoundCorner}" Content="Back" HorizontalAlignment="Left" Margin="0,375,0,0" VerticalAlignment="Top" Width="75" Click="Back_button_Click" Grid.Column="1" Height="20"/>
+        <Button x:Name="Calculate_Button"   FontSize="17" Style="{DynamicResource RoundCorner}" Content="Calculate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="87"  Height="65" Margin="338,87,0,0" Click="Calculate_Button_Click" Grid.Column="1"/>
+        <DataGrid x:Name="dataGridCapacityTB" CanUserAddRows="False" HorizontalScrollBarVisibility="Hidden" Margin="10,252,0,0" AutoGenerateColumns="False"   ItemsSource="{Binding Path=datagridData}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="402"  Height="110" Grid.ColumnSpan="2"  UnloadingRow="DataGrid_UnloadingRow">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Bit-Rate" IsReadOnly="True" Binding="{Binding Path=BitRate}" />
                 <DataGridTextColumn Header="Channels" IsReadOnly="True" Binding="{Binding Path=Channels}" />
@@ -41,9 +41,9 @@
                 <DataGridTextColumn Header="Capacity TB" IsReadOnly="True" Binding="{Binding Path=Capacity}" />
 
             </DataGrid.Columns>
-          
+
         </DataGrid>
-       
+
         <ComboBox x:Name="Resolutionbox" HorizontalAlignment="Left" Margin="0,108,0,0" VerticalAlignment="Top" Width="112" Height="24" SelectionChanged="Resolutionbox_SelectionChanged" RenderTransformOrigin="0.535,0.297" Grid.Column="1">
             <ComboBox.ToolTip>
                 <ToolTip>
@@ -95,15 +95,24 @@
                 </ToolTip>
             </ComboBox.ToolTip>
         </ComboBox>
-        <ComboBox x:Name="SubStreamBitRateBox" HorizontalAlignment="Left" Margin="210,47,0,0" VerticalAlignment="Top" Width="118" Height="24" Grid.Column="1" SelectionChanged="SubStremBitRateBox_SelectionChanged"  />
-        <ComboBox x:Name="RecordingTimePerDayBox" HorizontalAlignment="Left" Margin="210,108,0,0" VerticalAlignment="Top" Width="118" Height="24" Grid.Column="1" SelectionChanged="RecordingTimePerDayBox_SelectionChanged"   />
-       <!-- <TextBox x:Name="RequiredRecordingTimeBox" HorizontalAlignment="Left" Margin="210,223,0,0" VerticalAlignment="Top" Width="118" Height="24" Grid.Column="1" TextChanged="RequiredRecordingTimeBox_TextChanged"   />  -->
-        <TextBox x:Name="TotalCapacity_textbox" Background="DarkGray" IsReadOnly="True" HorizontalAlignment="Left" VerticalAlignment="Top" Width="118" Height="24" Margin="287,371,0,0" Grid.Column="1"   />
-       
-        <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="205,164,271,207">
-            <TextBox x:Name="RequiredRecordingTimeBlock" FontSize="13" x:FieldModifier="private" Margin="5,5,0,5" Width="65" Text="0" TextChanged="txtNum_TextChanged" />
-            <Button x:Name="cmdUp" x:FieldModifier="private" Margin="5,5,0,5" Content="˄" Width="20" Click="cmdUp_Click" />
-            <Button x:Name="cmdDown" x:FieldModifier="private" Margin="0,5,0,5"  Content="˅" Width="20" Click="cmdDown_Click" />
+        <ComboBox x:Name="SubStreamBitRateBox" HorizontalAlignment="Left" Margin="210,47,0,0" VerticalAlignment="Top" Width="84" Height="24" Grid.Column="1" SelectionChanged="SubStremBitRateBox_SelectionChanged">
+            <ComboBox.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold">Sub-Steam Bit-Rate</TextBlock>
+                        <TextBlock>If it is an Ossia OS, you have to choose a Sub-Stream</TextBlock>
+                        <TextBlock>of sub-stream recording (Not applicable for DVRs).</TextBlock>
+                    </StackPanel>
+                </ToolTip>
+            </ComboBox.ToolTip>
+        </ComboBox>
+        <ComboBox x:Name="RecordingTimePerDayBox" HorizontalAlignment="Left" Margin="210,108,0,0" VerticalAlignment="Top" Width="84" Height="24" Grid.Column="1"   />
+        <TextBox x:Name="TotalCapacity_textbox" Background="DarkGray" IsReadOnly="True" HorizontalAlignment="Left" VerticalAlignment="Top" Width="118" Height="24" Margin="282,371,0,0" Grid.Column="1"   />
+
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="205,164,108,207">
+            <TextBox x:Name="RequiredRecordingTimeBlock" FontSize="13" x:FieldModifier="private" Margin="5,5,0,5" Width="41" Text="0" TextChanged="txtNum_TextChanged" />
+            <Button x:Name="cmdUp" x:FieldModifier="private" Margin="5,5,0,5" Content="˄" Width="26" Click="cmdUp_Click" />
+            <Button x:Name="cmdDown" x:FieldModifier="private" Margin="0,5,0,5"  Content="˅" Width="24" Click="cmdDown_Click" />
         </StackPanel>
 
         <TextBlock x:Name="OptimalBitrateTextBlock"  HorizontalAlignment="Left" Margin="104,205,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="30" Width="132" RenderTransformOrigin="-0.085,0.5" Grid.Column="1"/>
@@ -114,11 +123,11 @@
         <TextBlock x:Name="BitRateTextBlock" HorizontalAlignment="Left" Margin="128,28,0,0" FontSize="13" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Height="21" Width="61" RenderTransformOrigin="0.625,0.81"><Run Text="Bit-Rate"/><Run Text=":"/></TextBlock>
         <TextBlock x:Name="ChannelNumberTextBlock" HorizontalAlignment="Left" Margin="128,87,0,0" FontSize="13" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Height="21" Width="65"><Run Text="Channel"/><Run Text=" "/><Run Text="#"/><Run Text=":"/></TextBlock>
         <TextBlock x:Name="OssiaOsTextBlock" HorizontalAlignment="Left" Margin="128,148,0,0" FontSize="13" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Height="21" Width="65"><Run Text="Ossia OS"/><Run Text=":"/></TextBlock>
-        <TextBlock x:Name="SubStremBitRateTextBlock" HorizontalAlignment="Left" Margin="210,28,0,0" FontSize="13" TextWrapping="WrapWithOverflow" Text="Sub-Steam Bit-Rate" VerticalAlignment="Top" Grid.Column="1" Height="21" Width="118"/>
-        <TextBlock x:Name="RecordingTimePerDayTextBlock" HorizontalAlignment="Left" Margin="210,71,0,0" FontSize="13" TextWrapping="WrapWithOverflow" Text="Recording Time Per Day (In hours)" VerticalAlignment="Top" Grid.Column="1" Height="37" Width="118"/>
-        <TextBlock x:Name="RequiredRecordingTimeTextBlock" HorizontalAlignment="Left" Margin="210,132,0,0" FontSize="13" TextWrapping="WrapWithOverflow" Text="Required recording time (In days)" VerticalAlignment="Top" Grid.Column="1" Height="37" Width="118"/>
-        <TextBlock x:Name="TotalTextBlock" HorizontalAlignment="Left" FontSize="13" TextWrapping="WrapWithOverflow" Text="Total capacity in TB:" VerticalAlignment="Top" Height="16" Width="120" Margin="162,372,0,0" Grid.Column="1"/>
+        <TextBlock x:Name="SubStreamBitRateTextBlock" HorizontalAlignment="Left" Margin="210,28,0,0" FontSize="13" TextWrapping="WrapWithOverflow" Text="Sub-Stream Bit-Rate" VerticalAlignment="Top" Grid.Column="1" Height="21" Width="123"/>
+        <TextBlock x:Name="RecordingTimePerDayTextBlock" HorizontalAlignment="Left" Margin="210,71,0,0" FontSize="13" TextWrapping="WrapWithOverflow" Text="Recording Time Per Day (In hours)" VerticalAlignment="Top" Grid.Column="1" Height="37" Width="123"/>
+        <TextBlock x:Name="RequiredRecordingTimeTextBlock" HorizontalAlignment="Left" Margin="210,132,0,0" FontSize="13" TextWrapping="WrapWithOverflow" Text="Required recording time (In days)" VerticalAlignment="Top" Grid.Column="1" Height="37" Width="123"/>
+        <TextBlock x:Name="TotalTextBlock" HorizontalAlignment="Left" FontSize="13" TextWrapping="WrapWithOverflow" Text="Total capacity in TB:" VerticalAlignment="Top" Height="16" Width="120" Margin="162,375,0,0" Grid.Column="1"/>
         <TextBlock x:Name="DataGridTextBlock" HorizontalAlignment="Left" FontSize="13" TextWrapping="WrapWithOverflow" Text="Added items:" VerticalAlignment="Top" Height="21" Width="114" Margin="10,231,0,0" RenderTransformOrigin="0.507,2.064" Grid.ColumnSpan="2"/>
-
+        <TextBlock x:Name="SubStreamKbps" Visibility="Hidden" HorizontalAlignment="Left" Margin="299,49,0,0"  FontSize="13" TextWrapping="WrapWithOverflow" Text="Kbps" VerticalAlignment="Top" Grid.Column="1" Height="22" Width="55"/>
     </Grid>
 </Window>

@@ -283,10 +283,14 @@ namespace HDD_Calculator
             if (string.Equals(_ossiaOS.Name, "No"))
             {
                 SubStreamBitRateBox.IsHitTestVisible = false;
+                SubStreamBitRateBox.Text = "";
+                SubStreamKbps.Visibility = Visibility.Hidden;
             }
             else
+            {
                 SubStreamBitRateBox.IsHitTestVisible = true;
-
+                SubStreamKbps.Visibility = Visibility.Visible;
+            }
         }
 
         private void SubStremBitRateBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -299,12 +303,12 @@ namespace HDD_Calculator
             try
             {
                 //Check that Bit-Rate & Channel & Ossia OS & Sub-Stream Bit-Rate & Recording Time Per Day & Required recording time fields aren't empty
-                if (String.Equals(_ossiaOS.Name, "Yes"))
+                if (String.Equals(_ossiaOS.Name, "Yes") & SubStreamBitRateBox.Text!="" & RecordingTimePerDayBox.Text!="")
                 {
                     // ((G49 + K49) * I49 * 3600 / 8 / 1024) * (Q49*T49/1024) if answer in gigabyte
                     double x = (double)((double)(int.Parse(BitRateBox.Text) + (double)int.Parse(SubStreamBitRateBox.Text)) * (double)int.Parse(ChannelNumberBox.Text)
-                                                                                                                           * 3600 / 8 / 1024) * (double)int.Parse(RecordingTimePerDayBox.Text) * (double)int.Parse(RequiredRecordingTimeBlock.Text) / 1024 / 1024;
-
+                          * 3600 / 8 / 1024) * (double)int.Parse(RecordingTimePerDayBox.Text) * (double)int.Parse(RequiredRecordingTimeBlock.Text) / 1024 / 1024;
+                    //SubStreamBitRateBox might be null
                     _capacityInTB = Math.Round(x, 2);// answer in terabyte
                     help_calculation();
 
@@ -329,16 +333,34 @@ namespace HDD_Calculator
        
         private void help_calculation()
         {
-            datagridData.Add(new DatagridData()
+            try
             {
-                Id = _datagridDataIndex,
-                BitRate = int.Parse(BitRateBox.Text),
-                Channels = int.Parse(ChannelNumberBox.Text),
-                substream = int.Parse(SubStreamBitRateBox.Text), //might be null
-                hours = int.Parse(RecordingTimePerDayBox.Text),
-                Days = int.Parse(RequiredRecordingTimeBlock.Text),
-                Capacity = _capacityInTB
-            });
+                datagridData.Add(new DatagridData()
+                {
+                    Id = _datagridDataIndex,
+                    BitRate = int.Parse(BitRateBox.Text),
+                    Channels = int.Parse(ChannelNumberBox.Text),
+                    substream = int.Parse(SubStreamBitRateBox.Text), //might be null
+                    hours = int.Parse(RecordingTimePerDayBox.Text),
+                    Days = int.Parse(RequiredRecordingTimeBlock.Text),
+                    Capacity = _capacityInTB
+                });
+            }
+            catch(FormatException ex)
+            {
+                datagridData.Add(new DatagridData()
+                {
+                    Id = _datagridDataIndex,
+                    BitRate = int.Parse(BitRateBox.Text),
+                    Channels = int.Parse(ChannelNumberBox.Text),
+                    substream = 0, 
+                    hours = int.Parse(RecordingTimePerDayBox.Text),
+                    Days = int.Parse(RequiredRecordingTimeBlock.Text),
+                    Capacity = _capacityInTB
+                });
+            }
+
+            
             _datagridDataIndex++;
             dataGridCapacityTB.ItemsSource=datagridData;   
              _totalcapacity += _capacityInTB;
@@ -354,20 +376,7 @@ namespace HDD_Calculator
                 }
             }
         }
-
-        private void RecordingTimePerDayBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void RequiredRecordingTimeBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-           string x = RecordingTimePerDayTextBlock.Text.ToString();
-        }
-
-
-       
-
+        
         public int NumValue
         {
             get { return _numValue; }
