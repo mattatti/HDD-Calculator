@@ -413,7 +413,33 @@ namespace HDD_Calculator
         }
 
 
-      
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //thinking of some sort of delay timer sleep
+                DatagridData row = (DatagridData)dataGridCapacityTB.SelectedItems[0];
+                ObservableCollection<DatagridData> data = (ObservableCollection<DatagridData>)dataGridCapacityTB.ItemsSource;
+                data.Remove(row);
+                if (row == null)
+                {
+                    _totalcapacity = 0;
+                    TotalCapacity_textbox.Text = _totalcapacity.ToString();
+                    return;
+                }
+                    double tmp = Math.Round(row.Capacity, 2);
+                _totalcapacity -= tmp;
+                _totalcapacity= Math.Round(_totalcapacity, 2);
+                TotalCapacity_textbox.Text = _totalcapacity.ToString();
+             //   dataGridCapacityTB.Items.RemoveAt(dataGridCapacityTB.SelectedIndex);
+              
+                
+            }
+            catch (InvalidCastException ex)
+            {
+                ;
+            }
+        }
 
         private void DataGrid_UnloadingRow(object sender, DataGridRowEventArgs e)
         {
@@ -423,8 +449,8 @@ namespace HDD_Calculator
                 DatagridData item = (DatagridData)e.Row.Item; // get the deleted item to handle it
                 // Rest of your code ...
                 // For example : deleting the object from DB using entityframework
-                _totalcapacity -= item.Capacity;
-                TotalCapacity_textbox.Text = _totalcapacity.ToString();
+               // _totalcapacity -= item.Capacity;
+                //TotalCapacity_textbox.Text = _totalcapacity.ToString();
             }
             catch (InvalidCastException ex)
             {
