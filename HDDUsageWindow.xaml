@@ -29,9 +29,14 @@
                 </ToolTip>
             </ComboBox.ToolTip>
         </ComboBox>
-        <Button x:Name="Back_button" Style="{DynamicResource RoundCorner}" Content="Back" HorizontalAlignment="Left" Margin="0,375,0,0" VerticalAlignment="Top" Width="75" Click="Back_button_Click" Grid.Column="1" Height="20"/>
-        <Button x:Name="Calculate_Button"   FontSize="17" Style="{DynamicResource RoundCorner}" Content="Calculate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="87"  Height="65" Margin="338,87,0,0" Click="Calculate_Button_Click" Grid.Column="1"/>
-        <DataGrid x:Name="dataGridCapacityTB" CanUserAddRows="False" HorizontalScrollBarVisibility="Hidden" Margin="1,252,0,0" AutoGenerateColumns="False"   ItemsSource="{Binding Path=datagridData}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="439"  Height="110"  UnloadingRow="DataGrid_UnloadingRow" Grid.Column="1">
+        <Button x:Name="Back_button" Style="{DynamicResource RoundCorner}" Content="Back" HorizontalAlignment="Left" Margin="8,375,0,0" VerticalAlignment="Top" Width="75" Click="Back_button_Click" Height="20" Grid.ColumnSpan="2"/>
+        <Button x:Name="clear_button" Style="{DynamicResource RoundCorner}" Content="Clear" HorizontalAlignment="Left" Margin="79,375,0,0" VerticalAlignment="Top" Width="75" Click="Clear_button_Click" Grid.Column="1" Height="20" RenderTransformOrigin="-0.107,0.7"/>
+
+        <Button x:Name="Calculate_Button"    Style="{DynamicResource RoundCorner}"   HorizontalAlignment="Left" VerticalAlignment="Top" Width="102"  Height="56" Margin="333,87,0,0" Click="Calculate_Button_Click" Grid.Column="1">
+            <TextBlock  FontSize="17" Text="Add to Calculation" TextWrapping="Wrap" />
+        </Button>
+
+        <DataGrid x:Name="dataGridCapacityTB" CanUserAddRows="False" HorizontalScrollBarVisibility="Hidden" Margin="1,252,0,0" AutoGenerateColumns="False"   ItemsSource="{Binding Path=datagridData}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="439"  Height="110"   Grid.Column="1">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
@@ -115,7 +120,7 @@
             </ComboBox.ToolTip>
         </ComboBox>
         <ComboBox x:Name="RecordingTimePerDayBox" HorizontalAlignment="Left" Margin="210,108,0,0" VerticalAlignment="Top" Width="84" Height="24" Grid.Column="1"   />
-        <TextBox x:Name="TotalCapacity_textbox" Background="DarkGray" IsReadOnly="True" HorizontalAlignment="Left" VerticalAlignment="Top" Width="118" Height="24" Margin="282,371,0,0" Grid.Column="1"   />
+        <TextBox x:Name="TotalCapacity_textbox" FontSize="15" Background="DarkGray" IsReadOnly="True" HorizontalAlignment="Left" VerticalAlignment="Top" Width="118" Height="24" Margin="322,371,0,0" Grid.Column="1"   />
 
         <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="205,164,108,207">
             <TextBox x:Name="RequiredRecordingTimeBlock" FontSize="13" x:FieldModifier="private" Margin="5,5,0,5" Width="41" Text="0" TextChanged="txtNum_TextChanged" />
@@ -134,7 +139,7 @@
         <TextBlock x:Name="SubStreamBitRateTextBlock" HorizontalAlignment="Left" Margin="210,28,0,0" FontSize="13" TextWrapping="WrapWithOverflow" Text="Sub-Stream Bit-Rate" VerticalAlignment="Top" Grid.Column="1" Height="21" Width="123"/>
         <TextBlock x:Name="RecordingTimePerDayTextBlock" HorizontalAlignment="Left" Margin="210,71,0,0" FontSize="13" TextWrapping="WrapWithOverflow" Text="Recording Time Per Day (In hours)" VerticalAlignment="Top" Grid.Column="1" Height="37" Width="123"/>
         <TextBlock x:Name="RequiredRecordingTimeTextBlock" HorizontalAlignment="Left" Margin="210,132,0,0" FontSize="13" TextWrapping="WrapWithOverflow" Text="Required recording time (In days)" VerticalAlignment="Top" Grid.Column="1" Height="37" Width="123"/>
-        <TextBlock x:Name="TotalTextBlock" HorizontalAlignment="Left" FontSize="13" TextWrapping="WrapWithOverflow" Text="Total capacity in TB:" VerticalAlignment="Top" Height="16" Width="120" Margin="162,375,0,0" Grid.Column="1"/>
+        <TextBlock x:Name="TotalTextBlock" HorizontalAlignment="Left" FontSize="15" TextWrapping="WrapWithOverflow" Text="Required capacity (TB):" VerticalAlignment="Top" Height="20" Width="168" Margin="165,375,0,0" Grid.Column="1"/>
         <TextBlock x:Name="DataGridTextBlock" HorizontalAlignment="Left" FontSize="13" TextWrapping="WrapWithOverflow" Text="Added items:" VerticalAlignment="Top" Height="21" Width="114" Margin="10,231,0,0" RenderTransformOrigin="0.507,2.064" Grid.ColumnSpan="2"/>
         <TextBlock x:Name="SubStreamKbps" Visibility="Hidden" HorizontalAlignment="Left" Margin="299,49,0,0"  FontSize="13" TextWrapping="WrapWithOverflow" Text="Kbps" VerticalAlignment="Top" Grid.Column="1" Height="22" Width="55"/>
     </Grid>

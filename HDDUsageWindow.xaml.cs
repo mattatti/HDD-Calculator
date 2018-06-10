@@ -40,6 +40,22 @@ namespace HDD_Calculator
         private int _datagridDataIndex = 1;
         private double _capacityInTB;
         private double _totalcapacity = 0;
+        private List<int> _h264list = new List<int>()
+        {
+          64,128,256,384,512,768,1024,1536,2048,2304,2560,3072,4096,5120,6144,7168,8192,10240,12536
+        };
+        private List<int> _h265list = new List<int>()
+        {
+          64,128,256,384,512,768,1024,1536,2048,2304,2560,3072,4096,5120,6144,7168
+        };
+        private List<int> _substreamlist = new List<int>()
+        {
+          64,128,256,384,512,768,1024,1536,2048,2304,2560,3072,4096
+        };
+
+
+
+
         public HDDUsageWindow()
         {
             InitializeComponent();
@@ -49,16 +65,18 @@ namespace HDD_Calculator
 
             Resolutionbox.IsHitTestVisible = false;
             EncodingBox.IsHitTestVisible = false;
+            BitRateBox.IsHitTestVisible = false;
+
             ChannelNumberBox.ItemsSource= InitChannelNumbers();    
             ChannelNumberBox.DisplayMemberPath = "Value";
             OssiaOSBox.ItemsSource = InitOssiaOS();
             OssiaOSBox.DisplayMemberPath = "Name";
             List<BitRate> tempbrate = new List<BitRate>();
             tempbrate = StringToBitRateList(GlobalVariables.getInstance()._databaseSize, _bitrateColumn);
-            SubStreamBitRateBox.ItemsSource = SubStreamBitRateList(tempbrate);
-            SubStreamBitRateBox.DisplayMemberPath = "Value";
-            BitRateBox.ItemsSource = tempbrate;
-            BitRateBox.DisplayMemberPath = "Value";
+           // SubStreamBitRateBox.ItemsSource = SubStreamBitRateList(tempbrate);
+            //SubStreamBitRateBox.DisplayMemberPath = "Value";
+            //BitRateBox.ItemsSource = tempbrate;
+            //BitRateBox.DisplayMemberPath = "Value";
             RecordingTimePerDayBox.ItemsSource = InitRecordingTimePerDay();
             RecordingTimePerDayBox.DisplayMemberPath = "Value";
 
@@ -257,6 +275,26 @@ namespace HDD_Calculator
                 }
             }
             //need to save in another database the selected encoding type
+
+            if (_encb.Name == "H.264")
+            {
+               // BitRateBox.ItemsSource = ;
+                BitRateBox.ItemsSource = _h264list;
+            }
+            if (_encb.Name == "H.264+")
+            {
+               // BitRateBox.ItemsSource = _h264list;
+                BitRateBox.ItemsSource = _h264list;
+
+            }
+            if (_encb.Name == "H.265")
+            {
+               // BitRateBox.ItemsSource = _h265list;
+                BitRateBox.ItemsSource = _h265list;
+
+            }
+            BitRateBox.IsHitTestVisible = true;
+
         }
 
         private void BitRateBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -290,6 +328,7 @@ namespace HDD_Calculator
             {
                 SubStreamBitRateBox.IsHitTestVisible = true;
                 SubStreamKbps.Visibility = Visibility.Visible;
+                SubStreamBitRateBox.ItemsSource = _substreamlist;
             }
         }
 
@@ -303,7 +342,7 @@ namespace HDD_Calculator
             try
             {
                 //Check that Bit-Rate & Channel & Ossia OS & Sub-Stream Bit-Rate & Recording Time Per Day & Required recording time fields aren't empty
-                if (String.Equals(_ossiaOS.Name, "Yes") & SubStreamBitRateBox.Text!="" & RecordingTimePerDayBox.Text!="")
+                if (String.Equals(_ossiaOS.Name, "Yes") && SubStreamBitRateBox.Text!="" && RecordingTimePerDayBox.Text!="" && ChannelNumberBox.Text !="" && BitRateBox.Text !="")//bitrate channel# 
                 {
                     // ((G49 + K49) * I49 * 3600 / 8 / 1024) * (Q49*T49/1024) if answer in gigabyte
                     double x = (double)((double)(int.Parse(BitRateBox.Text) + (double)int.Parse(SubStreamBitRateBox.Text)) * (double)int.Parse(ChannelNumberBox.Text)
@@ -421,12 +460,7 @@ namespace HDD_Calculator
                 DatagridData row = (DatagridData)dataGridCapacityTB.SelectedItems[0];
                 ObservableCollection<DatagridData> data = (ObservableCollection<DatagridData>)dataGridCapacityTB.ItemsSource;
                 data.Remove(row);
-                if (row == null)
-                {
-                    _totalcapacity = 0;
-                    TotalCapacity_textbox.Text = _totalcapacity.ToString();
-                    return;
-                }
+               
                     double tmp = Math.Round(row.Capacity, 2);
                 _totalcapacity -= tmp;
                 _totalcapacity= Math.Round(_totalcapacity, 2);
@@ -441,22 +475,11 @@ namespace HDD_Calculator
             }
         }
 
-        private void DataGrid_UnloadingRow(object sender, DataGridRowEventArgs e)
+        private void Clear_button_Click(object sender, RoutedEventArgs e)
         {
-
-            try
-            {
-                DatagridData item = (DatagridData)e.Row.Item; // get the deleted item to handle it
-                // Rest of your code ...
-                // For example : deleting the object from DB using entityframework
-               // _totalcapacity -= item.Capacity;
-                //TotalCapacity_textbox.Text = _totalcapacity.ToString();
-            }
-            catch (InvalidCastException ex)
-            {
-                ;
-            }
-           
+            HDDUsageWindow mw = new HDDUsageWindow(); //Think of changing to real clear instead of new window
+            mw.Show();
+            this.Close();
         }
     }
 }
