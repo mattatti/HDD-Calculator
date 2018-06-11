@@ -11,6 +11,7 @@
         MaxHeight="444" MaxWidth="469"
         WindowStartupLocation="CenterScreen" 
          FontWeight="Medium"
+        ResizeMode="CanMinimize"
         >
 
     <Grid Background="LightGray" Margin="0,0,2,1" >
@@ -36,7 +37,7 @@
             <TextBlock  FontSize="17" Text="Add to Calculation" TextWrapping="Wrap" />
         </Button>
 
-        <DataGrid x:Name="dataGridCapacityTB" CanUserAddRows="False" HorizontalScrollBarVisibility="Hidden" Margin="1,252,0,0" AutoGenerateColumns="False"   ItemsSource="{Binding Path=datagridData}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="439"  Height="110"   Grid.Column="1">
+        <DataGrid x:Name="dataGridCapacityTB" CanUserDeleteRows="False" CanUserAddRows="False" HorizontalScrollBarVisibility="Hidden" Margin="1,252,0,0" AutoGenerateColumns="False"   ItemsSource="{Binding Path=datagridData}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="439"  Height="110"   Grid.Column="1">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>

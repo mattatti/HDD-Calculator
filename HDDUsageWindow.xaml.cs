@@ -52,7 +52,7 @@ namespace HDD_Calculator
         {
           64,128,256,384,512,768,1024,1536,2048,2304,2560,3072,4096
         };
-
+       private  List<OssiaOS> _oss_OS = new List<OssiaOS>();
 
 
 
@@ -62,7 +62,7 @@ namespace HDD_Calculator
           
             Camerasbox.ItemsSource = StringToCameraNameList(GlobalVariables.getInstance()._databaseSize, _cameraColumn);
             Camerasbox.DisplayMemberPath = "Name";
-
+            
             Resolutionbox.IsHitTestVisible = false;
             EncodingBox.IsHitTestVisible = false;
             BitRateBox.IsHitTestVisible = false;
@@ -71,18 +71,19 @@ namespace HDD_Calculator
             ChannelNumberBox.DisplayMemberPath = "Value";
             OssiaOSBox.ItemsSource = InitOssiaOS();
             OssiaOSBox.DisplayMemberPath = "Name";
+            OssiaOSBox.Text = "Yes";
             List<BitRate> tempbrate = new List<BitRate>();
             tempbrate = StringToBitRateList(GlobalVariables.getInstance()._databaseSize, _bitrateColumn);
-           // SubStreamBitRateBox.ItemsSource = SubStreamBitRateList(tempbrate);
-            //SubStreamBitRateBox.DisplayMemberPath = "Value";
+            SubStreamBitRateBox.ItemsSource = SubStreamBitRateList(tempbrate);
+            SubStreamBitRateBox.DisplayMemberPath = "Value";
             //BitRateBox.ItemsSource = tempbrate;
             //BitRateBox.DisplayMemberPath = "Value";
             RecordingTimePerDayBox.ItemsSource = InitRecordingTimePerDay();
             RecordingTimePerDayBox.DisplayMemberPath = "Value";
 
             RequiredRecordingTimeBlock.Text = _numValue.ToString();
-            SubStreamBitRateBox.IsHitTestVisible = false;
-          //  this.DataContext = datagridData;
+           // SubStreamBitRateBox.IsHitTestVisible = false;
+            //  this.DataContext = datagridData;
         }
        
         protected override void OnSourceInitialized(EventArgs e)
@@ -125,7 +126,7 @@ namespace HDD_Calculator
         }
         private List<OssiaOS> InitOssiaOS()
         {
-            List<OssiaOS> _oss_OS = new List<OssiaOS>();
+           
             OssiaOS os1= new OssiaOS();
             os1.Name = "Yes";
             _oss_OS.Add(os1);
@@ -191,6 +192,8 @@ namespace HDD_Calculator
 
         private void Camerasbox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            Resolutionbox.IsHitTestVisible = false;
+            Resolutionbox.ItemsSource = "";
             EncodingBox.ItemsSource = "";
             EncodingBox.IsHitTestVisible = false;
         
@@ -227,7 +230,8 @@ namespace HDD_Calculator
 
         private void Resolutionbox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            BitRateBox.IsHitTestVisible = false;
+            BitRateBox.Text = "";
             _resb = Resolutionbox.SelectedItem as Resolution;
             List<EncodingType> enctype = new List<EncodingType>(); ;
             if (_resb == null)
@@ -263,6 +267,8 @@ namespace HDD_Calculator
 
         private void EncodingBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            BitRateBox.Text = "";
+
             OptimalBitRateMessage.Visibility = Visibility.Visible;
             _encb = EncodingBox.SelectedItem as EncodingType;
             if (_encb == null) return;
@@ -317,8 +323,9 @@ namespace HDD_Calculator
 
         private void OssiaOSBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+           
             _ossiaOS = OssiaOSBox.SelectedItem as OssiaOS;
-            if (string.Equals(_ossiaOS.Name, "No"))
+            if (_ossiaOS.Name == "No")
             {
                 SubStreamBitRateBox.IsHitTestVisible = false;
                 SubStreamBitRateBox.Text = "";
@@ -342,35 +349,41 @@ namespace HDD_Calculator
             try
             {
                 //Check that Bit-Rate & Channel & Ossia OS & Sub-Stream Bit-Rate & Recording Time Per Day & Required recording time fields aren't empty
-                if (String.Equals(_ossiaOS.Name, "Yes") && SubStreamBitRateBox.Text!="" && RecordingTimePerDayBox.Text!="" && ChannelNumberBox.Text !="" && BitRateBox.Text !="")//bitrate channel# 
+                if (_ossiaOS.Name == "Yes" && SubStreamBitRateBox.Text != "" && RecordingTimePerDayBox.Text != "" && ChannelNumberBox.Text != "" && BitRateBox.Text != "")//bitrate channel# 
                 {
+                  
                     // ((G49 + K49) * I49 * 3600 / 8 / 1024) * (Q49*T49/1024) if answer in gigabyte
                     double x = (double)((double)(int.Parse(BitRateBox.Text) + (double)int.Parse(SubStreamBitRateBox.Text)) * (double)int.Parse(ChannelNumberBox.Text)
                           * 3600 / 8 / 1024) * (double)int.Parse(RecordingTimePerDayBox.Text) * (double)int.Parse(RequiredRecordingTimeBlock.Text) / 1024 / 1024;
                     //SubStreamBitRateBox might be null
                     _capacityInTB = Math.Round(x, 2);// answer in terabyte
-                    help_calculation();
+                    help_calculation_and_AddtoDatagrid();
+                    
 
                 }
-                else if (String.Equals(_ossiaOS.Name, "No"))
+                else if (_ossiaOS.Name == "No" && RecordingTimePerDayBox.Text != "" && ChannelNumberBox.Text != "" && BitRateBox.Text != "")
                 {
+                   
                     // (G49 * I49 * 3600 / 8 / 1024))* (Q49*T49/1024) if answer in gigabyte
                     // /1024 if answer in terabyte
                     double x = (double)((double)int.Parse(BitRateBox.Text) * (double)int.Parse(ChannelNumberBox.Text)
                                                                            * 3600 / 8 / 1024) * (double)int.Parse(RecordingTimePerDayBox.Text) * (double)int.Parse(RequiredRecordingTimeBlock.Text) / 1024 / 1024;
 
                     _capacityInTB = Math.Round(x, 2);// answer in terabyte
-                    help_calculation();
+                    help_calculation_and_AddtoDatagrid();
+                   
+
                 }
-            }
+               
+            }   
             catch (NullReferenceException ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            
+            OssiaOSBox.Text = "Yes";
         }
        
-        private void help_calculation()
+        private void help_calculation_and_AddtoDatagrid()
         {
             try
             {
@@ -414,8 +427,20 @@ namespace HDD_Calculator
                     if (scroll != null) scroll.ScrollToEnd();
                 }
             }
+
+
+
+
+            Camerasbox.Text = "";
+            Resolutionbox.Text = "";
+            EncodingBox.Text = "";
+            BitRateBox.Text = "";
+            ChannelNumberBox.Text = "";
+           
+
+
+
         }
-        
         public int NumValue
         {
             get { return _numValue; }
