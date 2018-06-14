@@ -8,11 +8,11 @@
         Height="339" Width="444"
         MinHeight="339" MaxHeight="339" MinWidth="444" MaxWidth="444"
         WindowStartupLocation="CenterScreen"
-        Title=" HDD Calculator                                          Version 1.0.0"
+        Title=" HDD Calculator                                   Version 1.0.4"
         ResizeMode="CanMinimize"
         >
-    <Grid Background="White" Margin="0,0,2,0">
-        <Button x:Name="HDDUsage" Background="DeepSkyBlue" Content="HDD Usage" HorizontalAlignment="Left" FontSize="20" Margin="112,53,0,0" VerticalAlignment="Top" Width="208" Height="58" Click="HDDUsage_button_Click">
+    <Grid Background="#FF222222" Margin="0,0,-1,0">
+        <Button x:Name="HDDUsage" Style="{DynamicResource RoundCorner}" Background="#FFD90000" Foreground="White" Content="HDD Usage" HorizontalAlignment="Left" FontSize="20" Margin="112,53,0,0" VerticalAlignment="Top" Width="208" Height="58" Click="HDDUsage_button_Click">
             <Button.ToolTip>
                 <ToolTip>
                     <StackPanel>
@@ -22,7 +22,7 @@
                 </ToolTip>
             </Button.ToolTip>
         </Button>
-        <Button x:Name="Recording_Duration" Background="LightBlue"  Content="Recording Duration " FontSize="20" HorizontalAlignment="Left" Margin="112,128,0,0" VerticalAlignment="Top" Width="208" Height="58" Click="Recording_Duration_button_Click">
+        <Button x:Name="Recording_Duration" Style="{DynamicResource RoundCorner}" Background="#FFD90000" Foreground="White" Content="Recording Duration " FontSize="20" HorizontalAlignment="Left" Margin="112,128,0,0" VerticalAlignment="Top" Width="208" Height="58" Click="Recording_Duration_button_Click">
             <Button.ToolTip>
                 <ToolTip>
                     <StackPanel>
@@ -32,8 +32,8 @@
                 </ToolTip>
             </Button.ToolTip>
         </Button>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" FontSize="20" Margin="10,10,0,0" TextWrapping="Wrap" Text="HDD Usage and recording duration calculator" VerticalAlignment="Top" Width="405"/>
-        <Image x:Name="Image1_png" Margin="112,216,114,10" Source="Image1.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Foreground="White" FontSize="20" Margin="10,10,0,0" TextWrapping="Wrap" Text="HDD Usage and Recording Duration calculator" VerticalAlignment="Top" Width="416"/>
+        <Image x:Name="Image1_png" Margin="112,216,0,0" Source="provisionlogo.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

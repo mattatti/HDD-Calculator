@@ -46,7 +46,7 @@ namespace HDD_Calculator
 
             for (rowCnt = 2; rowCnt <= excelRange.Rows.Count; rowCnt++)
             {
-                string strData = "";
+               
 
                 for (var colCnt = 1; colCnt <= excelRange.Columns.Count; colCnt++)
                 {

@@ -23,8 +23,8 @@
                                                 <TranslateTransform X="0.02" Y="0.3"/>
                                             </TransformGroup>
                                         </RadialGradientBrush.RelativeTransform>
-                                        <GradientStop Offset="1" Color="LightPink"/>
-                                        <GradientStop Offset="0.3" Color="red"/>
+                                        <GradientStop Offset="1" Color="#FFEE4545"/>
+                                        <GradientStop Offset="0.3" Color="#FFD90000"/>
                                     </RadialGradientBrush>
                                 </Border.Background>
                                 <ContentPresenter HorizontalAlignment="Center"
@@ -45,8 +45,8 @@
                                                     <TranslateTransform X="0.02" Y="0.3"/>
                                                 </TransformGroup>
                                             </RadialGradientBrush.RelativeTransform>
-                                            <GradientStop Color="#00000000" Offset="1"/>
-                                            <GradientStop Color="LightGray" Offset="0.3"/>
+                                            <GradientStop Color="Pink" Offset="1"/>
+                                            <GradientStop Color="Red" Offset="0.3"/>
                                         </RadialGradientBrush>
                                     </Setter.Value>
                                 </Setter>

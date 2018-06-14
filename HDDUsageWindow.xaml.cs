@@ -28,7 +28,7 @@ namespace HDD_Calculator
         private ChannelNumber _channelNumber;
         private OssiaOS _ossiaOS;
         private SubSteamBitRate _subSteamBitRate;
-        private RecordingTimePerDay _recordingTimePerDay;
+       // private RecordingTimePerDay _recordingTimePerDay;
         private ObservableCollection<DatagridData> datagridData = new ObservableCollection<DatagridData>();
         private readonly int _cameraColumn = 0;
         private readonly int _resolutionColumn = 1;
@@ -48,10 +48,7 @@ namespace HDD_Calculator
         {
           64,128,256,384,512,768,1024,1536,2048,2304,2560,3072,4096,5120,6144,7168
         };
-        private List<int> _substreamlist = new List<int>()
-        {
-          64,128,256,384,512,768,1024,1536,2048,2304,2560,3072,4096
-        };
+       
        private  List<OssiaOS> _oss_OS = new List<OssiaOS>();
 
 
@@ -72,18 +69,19 @@ namespace HDD_Calculator
             OssiaOSBox.ItemsSource = InitOssiaOS();
             OssiaOSBox.DisplayMemberPath = "Name";
             OssiaOSBox.Text = "Yes";
-            List<BitRate> tempbrate = new List<BitRate>();
-            tempbrate = StringToBitRateList(GlobalVariables.getInstance()._databaseSize, _bitrateColumn);
-            SubStreamBitRateBox.ItemsSource = SubStreamBitRateList(tempbrate);
+            //List<BitRate> tempbrate = new List<BitRate>();
+            //tempbrate = StringToBitRateList(GlobalVariables.getInstance()._databaseSize, _bitrateColumn);
+            SubStreamBitRateBox.ItemsSource = SubStreamBitRateList();
             SubStreamBitRateBox.DisplayMemberPath = "Value";
             //BitRateBox.ItemsSource = tempbrate;
             //BitRateBox.DisplayMemberPath = "Value";
             RecordingTimePerDayBox.ItemsSource = InitRecordingTimePerDay();
             RecordingTimePerDayBox.DisplayMemberPath = "Value";
 
-            RequiredRecordingTimeBlock.Text = _numValue.ToString();
-           // SubStreamBitRateBox.IsHitTestVisible = false;
+            RequiredRecordingTimeBox.Text = _numValue.ToString();
+            // SubStreamBitRateBox.IsHitTestVisible = false;
             //  this.DataContext = datagridData;
+            
         }
        
         protected override void OnSourceInitialized(EventArgs e)
@@ -112,16 +110,26 @@ namespace HDD_Calculator
             }
             return recordingtimeperday;
         }
-        private List<SubSteamBitRate> SubStreamBitRateList(List<BitRate> tempbrate)
+        private List<SubSteamBitRate> SubStreamBitRateList()
         {
             List<SubSteamBitRate> substeambitrate = new List<SubSteamBitRate>();
-            for (int i = 0; i <= tempbrate.Count / 2; i++)
-            {
-                SubSteamBitRate ssbr = new SubSteamBitRate();
-                ssbr.Value = tempbrate.ElementAt(i).Value;
-                substeambitrate.Add(ssbr);
-            }
 
+            substeambitrate.Add(new SubSteamBitRate() { Value = 64 });
+            substeambitrate.Add(new SubSteamBitRate() { Value = 128 });
+            substeambitrate.Add(new SubSteamBitRate() { Value = 256 });
+            substeambitrate.Add(new SubSteamBitRate() { Value = 384 });
+            substeambitrate.Add(new SubSteamBitRate() { Value = 512 });
+            substeambitrate.Add(new SubSteamBitRate() { Value = 1024 });
+            substeambitrate.Add(new SubSteamBitRate() { Value = 1536 });
+            substeambitrate.Add(new SubSteamBitRate() { Value = 2048 });
+            substeambitrate.Add(new SubSteamBitRate() { Value = 2304 });
+            substeambitrate.Add(new SubSteamBitRate() { Value = 2560 });
+            substeambitrate.Add(new SubSteamBitRate() { Value = 3072 });
+            substeambitrate.Add(new SubSteamBitRate() { Value = 4096 });
+
+
+       
+        
             return substeambitrate;
         }
         private List<OssiaOS> InitOssiaOS()
@@ -323,7 +331,7 @@ namespace HDD_Calculator
 
         private void OssiaOSBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           
+
             _ossiaOS = OssiaOSBox.SelectedItem as OssiaOS;
             if (_ossiaOS.Name == "No")
             {
@@ -331,11 +339,11 @@ namespace HDD_Calculator
                 SubStreamBitRateBox.Text = "";
                 SubStreamKbps.Visibility = Visibility.Hidden;
             }
-            else
+            else if (_ossiaOS.Name == "Yes")
             {
                 SubStreamBitRateBox.IsHitTestVisible = true;
                 SubStreamKbps.Visibility = Visibility.Visible;
-                SubStreamBitRateBox.ItemsSource = _substreamlist;
+               
             }
         }
 
@@ -354,9 +362,9 @@ namespace HDD_Calculator
                   
                     // ((G49 + K49) * I49 * 3600 / 8 / 1024) * (Q49*T49/1024) if answer in gigabyte
                     double x = (double)((double)(int.Parse(BitRateBox.Text) + (double)int.Parse(SubStreamBitRateBox.Text)) * (double)int.Parse(ChannelNumberBox.Text)
-                          * 3600 / 8 / 1024) * (double)int.Parse(RecordingTimePerDayBox.Text) * (double)int.Parse(RequiredRecordingTimeBlock.Text) / 1024 / 1024;
+                          * 3600 / 8 / 1024) * (double)int.Parse(RecordingTimePerDayBox.Text) * (double)int.Parse(RequiredRecordingTimeBox.Text) / 1024 / 1024;
                     //SubStreamBitRateBox might be null
-                    _capacityInTB = Math.Round(x, 2);// answer in terabyte
+                    _capacityInTB = Math.Round(x, 4);// answer in terabyte
                     help_calculation_and_AddtoDatagrid();
                     
 
@@ -367,9 +375,9 @@ namespace HDD_Calculator
                     // (G49 * I49 * 3600 / 8 / 1024))* (Q49*T49/1024) if answer in gigabyte
                     // /1024 if answer in terabyte
                     double x = (double)((double)int.Parse(BitRateBox.Text) * (double)int.Parse(ChannelNumberBox.Text)
-                                                                           * 3600 / 8 / 1024) * (double)int.Parse(RecordingTimePerDayBox.Text) * (double)int.Parse(RequiredRecordingTimeBlock.Text) / 1024 / 1024;
+                                                                           * 3600 / 8 / 1024) * (double)int.Parse(RecordingTimePerDayBox.Text) * (double)int.Parse(RequiredRecordingTimeBox.Text) / 1024 / 1024;
 
-                    _capacityInTB = Math.Round(x, 2);// answer in terabyte
+                    _capacityInTB = Math.Round(x, 4);// answer in terabyte
                     help_calculation_and_AddtoDatagrid();
                    
 
@@ -394,7 +402,7 @@ namespace HDD_Calculator
                     Channels = int.Parse(ChannelNumberBox.Text),
                     substream = int.Parse(SubStreamBitRateBox.Text), //might be null
                     hours = int.Parse(RecordingTimePerDayBox.Text),
-                    Days = int.Parse(RequiredRecordingTimeBlock.Text),
+                    Days = int.Parse(RequiredRecordingTimeBox.Text),
                     Capacity = _capacityInTB
                 });
             }
@@ -407,9 +415,10 @@ namespace HDD_Calculator
                     Channels = int.Parse(ChannelNumberBox.Text),
                     substream = 0, 
                     hours = int.Parse(RecordingTimePerDayBox.Text),
-                    Days = int.Parse(RequiredRecordingTimeBlock.Text),
+                    Days = int.Parse(RequiredRecordingTimeBox.Text),
                     Capacity = _capacityInTB
                 });
+                
             }
 
             
@@ -436,7 +445,9 @@ namespace HDD_Calculator
             EncodingBox.Text = "";
             BitRateBox.Text = "";
             ChannelNumberBox.Text = "";
-           
+            SubStreamBitRateBox.Text = "";
+            RecordingTimePerDayBox.Text = "";
+            RequiredRecordingTimeBox.Text = "0";
 
 
 
@@ -447,7 +458,7 @@ namespace HDD_Calculator
             set
             {
                 _numValue = value;
-                RequiredRecordingTimeBlock.Text = value.ToString();
+                RequiredRecordingTimeBox.Text = value.ToString();
             }
         }
 
@@ -467,13 +478,25 @@ namespace HDD_Calculator
 
         private void txtNum_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (RequiredRecordingTimeBlock == null)
+            RequiredRecordingTimeBox.TextChanged += (s, ee) =>
+            {
+                var textbox = s as TextBox;
+                int value;
+                if (int.TryParse(textbox.Text, out value))
+                {
+                    if (value > 2000)
+                        textbox.Text = "2000";
+                    else if (value < 0)
+                        textbox.Text = "0";
+                }
+            };
+            if (RequiredRecordingTimeBox == null)
             {
                 return;
             }
 
-            if (!int.TryParse(RequiredRecordingTimeBlock.Text, out _numValue))
-                RequiredRecordingTimeBlock.Text = _numValue.ToString();
+            if (!int.TryParse(RequiredRecordingTimeBox.Text, out _numValue))
+                RequiredRecordingTimeBox.Text = _numValue.ToString();
         }
 
 
@@ -486,9 +509,9 @@ namespace HDD_Calculator
                 ObservableCollection<DatagridData> data = (ObservableCollection<DatagridData>)dataGridCapacityTB.ItemsSource;
                 data.Remove(row);
                
-                    double tmp = Math.Round(row.Capacity, 2);
+                    double tmp = Math.Round(row.Capacity, 4);
                 _totalcapacity -= tmp;
-                _totalcapacity= Math.Round(_totalcapacity, 2);
+                _totalcapacity= Math.Round(_totalcapacity, 4);
                 TotalCapacity_textbox.Text = _totalcapacity.ToString();
              //   dataGridCapacityTB.Items.RemoveAt(dataGridCapacityTB.SelectedIndex);
               
